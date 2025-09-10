@@ -1,53 +1,114 @@
 ﻿using System;
-using System.Collections.Generic;
 
-//Create an array A of length 10 of integers. Values ranging from 1 to 50.
-//1. Find all pair of elements whose sum is 25.
-//2. Find the number of elements of A which are even, and the number of elements of A which are odd.
-//3. Write a procedure which finds the average of the value of A.
-
+//Write a C# program that utilizes a 1D array to implement a simple inventory management system 
 
 class Program
 {
     static void Main()
     {
-       
-            int[] A = { 3, 7, 12, 15, 10, 5, 20, 25, 2, 23 };
-            int sum = 0;
-            List<(int, int)> pairs = new List<(int, int)>();
-            List<int> even = new List<int>();
-            List<int> odd = new List<int>();
-            for (int i = 0; i < A.Length; i++)
+        string[] inventory = new string[10];
+        int item = 0;
+        bool running = true;
+
+        while (running)
+        {
+            Console.WriteLine("\n--- Inventory Management ---");
+            Console.WriteLine("1. Add Item");
+            Console.WriteLine("2. Remove Item");
+            Console.WriteLine("3. Search Item");
+            Console.WriteLine("4. View Inventory");
+            Console.WriteLine("5. Exit");
+            Console.Write("Choose an option: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
             {
-                sum += A[i];
-                if (i % 2 == 0) { even.Add(i); }
-                else { odd.Add(i); }
-                for (int j = i + 1; j < A.Length; j++)
-                {
-                    if (A[i] + A[j] == 25)
+                case "1": 
+                    if (item < inventory.Length)
                     {
-                        pairs.Add((A[i], A[j]));
+                        Console.Write("Enter item name: ");
+                        string addItem = Console.ReadLine();
+                        inventory[item] = addItem;
+                        item++;
+                        Console.WriteLine($"{addItem} added to inventory.");
                     }
-                }
+                    else
+                    {
+                        Console.WriteLine("Inventory is full!");
+                    }
+                    break;
+
+                case "2": 
+                    Console.Write("Enter item name to remove: ");
+                    string removeItem = Console.ReadLine();
+                    bool foundForRemoving = false;
+
+                    for (int i = 0; i < item; i++)
+                    {
+                        if (inventory[i] == removeItem)
+                        {
+                            for (int j = i; j < item - 1; j++)
+                            {
+                                inventory[j] = inventory[j + 1];
+                            }
+                            inventory[item - 1] = null;
+                            item--;
+                            foundForRemoving = true;
+                            Console.WriteLine($"{removeItem} removed.");
+                            break;
+                        }
+                    }
+
+                    if (!foundForRemoving)
+                    {
+                        Console.WriteLine("Item not found.");
+                    }
+                    break;
+
+                case "3": 
+                    Console.Write("Enter name to search: ");
+                    string search = Console.ReadLine();
+                    bool found = false;
+
+                    foreach (var i in inventory)
+                    {
+                        if (i == search)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found)
+                        Console.WriteLine("Item found.");
+                    else
+                        Console.WriteLine("Item not found.");
+                    break;
+
+                case "4": 
+                    Console.WriteLine("Current Inventory:");
+                    if (item == 0)
+                    {
+                        Console.WriteLine("Inventory is empty.");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < item; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {inventory[i]}");
+                        }
+                    }
+                    break;
+
+                case "5": 
+                    running = false;
+                    Console.WriteLine("Goodbye!");
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid option, try again.");
+                    break;
             }
-            Console.WriteLine("Pairs Having Sum = 25 : ");
-            foreach (var p in pairs)
-            {
-                Console.WriteLine("{0},{1}", p.Item1, p.Item2);
-            }
-            Console.Write("Even = ");
-            foreach (var p in even)
-            {
-                Console.Write("{0} ", p);
-            }
-            Console.WriteLine();
-            Console.Write("ODD = ");
-            foreach (var q in odd)
-            {
-                Console.Write("{0} ", q);
-            }
-            Console.WriteLine();
-            double avgA = (double)sum / A.Length;
-            Console.WriteLine("Average = " + avgA);
         }
+    }
 }
