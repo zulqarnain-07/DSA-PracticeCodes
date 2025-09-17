@@ -16,8 +16,9 @@ class MatrixOperations
         Console.WriteLine($"The square of {num} is: {result}");
     }
 
-    public static int SquareUsingOdd(int n , int odd = 1) { 
-        if(n == 1) {  return 1; }
+    public static int SquareUsingOdd(int n, int odd = 1)
+    {
+        if (n == 1) { return 1; }
         return odd + SquareUsingOdd(n - 1, odd + 2);
     }
 
